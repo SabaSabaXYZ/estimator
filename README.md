@@ -8,3 +8,10 @@
 - Question and answer list
 - Button to copy estimate into clipboard
 - Save and load functionality
+
+## Design
+
+- App → Navigation toolbar with router-outlet underneath. Also has buttons to save and load the estimate, along with a button to export the estimate in Markdown.
+- Estimate → Table, along with a field to set the buffer percentage. Also displays the subtotal estimate and the total estimate (i.e. with the buffer and rounded up).
+- Analysis → Question and answer table
+- All state is captured in a singleton service.
