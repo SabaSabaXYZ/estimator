@@ -3,6 +3,6 @@ import { Estimate } from './estimate/estimate';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { title: 'Estimate', path: '/estimate', loadComponent: () => Estimate },
-  { title: 'Analysis', path: '/analysis', loadComponent: () => Analysis },
+  { title: 'Estimate', path: '', pathMatch: 'full', loadComponent: () => Estimate },
+  { title: 'Analysis', path: 'analysis', pathMatch: 'full', loadComponent: () => Analysis },
 ];

@@ -1,3 +1,21 @@
+<nav>
+  <mat-toolbar>
+    <span>Estimator</span>
+    <span class="toolbar-space"></span>
+    <a
+      matButton
+      routerLink="/"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page">Estimate</a>
+    <a
+      matButton
+      routerLink="/analysis"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page">Analysis</a>
+  </mat-toolbar>
+</nav>
 <main>
   <router-outlet></router-outlet>
 </main>

@@ -4,7 +4,9 @@ const path = require('path');
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    title: 'Estimator',
+    autoHideMenuBar: true
   });
   win.loadFile(path.join(__dirname, 'dist/estimator/browser/index.html'))
 }

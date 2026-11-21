@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+
+.toolbar-space {
+  flex: 1 1 auto;
+}
+
+nav {
+  mat-toolbar {
+    a {
+      @include mat.button-overrides((text-label-text-color: var(--mat-sys-on-surface)));
+    }
+    a.active-link {
+      @include mat.button-overrides((text-label-text-color: var(--mat-sys-primary), text-state-layer-color: var(--mat-sys-primary)));
+    }
+  }
+}
