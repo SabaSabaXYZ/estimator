@@ -5,11 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng lint && ng build",
     "watch": "ng build --watch --configuration development",
-    "electron": "npx ng build --base-href ./ && npx electron .",
-    "windows": "npx electron-builder --win --x64",
-    "test": "ng test",
+    "electron": "ng lint && ng build --base-href ./ && electron .",
+    "windows": "ng lint && electron-builder --win --x64",
+    "test": "ng lint && ng test",
     "lint": "ng lint"
   },
   "private": true,
