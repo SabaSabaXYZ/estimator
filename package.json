@@ -1,11 +1,14 @@
 {
   "name": "estimator",
   "version": "0.0.0",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "electron": "npx ng build --base-href ./ && npx electron .",
+    "windows": "npx electron-builder --win --x64",
     "test": "ng test"
   },
   "private": true,
@@ -24,6 +27,7 @@
     "@angular/build": "^22.3.0",
     "@angular/cli": "^22.3.0",
     "@angular/compiler-cli": "^22.3.0",
+    "electron": "^45.4.1",
     "jsdom": "^31.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
