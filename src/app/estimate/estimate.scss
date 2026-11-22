@@ -29,8 +29,14 @@ div.section + h2 {
   @include mat.fab-overrides((container-color: var(--mat-sys-primary), foreground-color: var(--mat-sys-on-primary)));
 }
 
+.subtotal-row {
+  font: var(--mat-sys-label-large);
+  letter-spacing: var(--mat-sys-label-large-tracking);
+}
+
 .total-row {
-  font-weight: bold;
+  font: var(--mat-sys-title-medium);
+  letter-spacing: var(--mat-sys-title-medium-tracking);
 }
 
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
