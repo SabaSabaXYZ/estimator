@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+
+div.section {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+
+  .item {
+    flex: 1;
+    mat-form-field, button {
+      width: 100%;
+    }
+  }
+
+  mat-table {
+    width: 100%;
+  }
+}
+
+div.section + div.section {
+  margin-top: 1em;
+}
+
+div.section + h2 {
+  margin-top: 2em;
+}
+
+.primary-fab-button {
+  @include mat.fab-overrides((container-color: var(--mat-sys-primary), foreground-color: var(--mat-sys-on-primary)));
+}

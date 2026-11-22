@@ -12,6 +12,7 @@ export type EstimationItem = {
 };
 
 export type EstimationItemErrors = Record<keyof EstimationItem, string>;
+export type QuestionAnswerErrors = Record<keyof QuestionAnswer, string>;
 
 @Service()
 export class StateService {
@@ -19,6 +20,11 @@ export class StateService {
   static readonly emptyEstimationItem: EstimationItem = {
     description: '',
     hours: 0
+  };
+
+  static readonly emptyQuestionAnswer: QuestionAnswer = {
+    question: '',
+    answer: ''
   };
 
   readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>(StateService.emptyEstimationItem);
@@ -33,6 +39,17 @@ export class StateService {
   readonly addTaskFormErrors: Signal<EstimationItemErrors> = computed(() => ({
     description: this.addTaskForm.description().errors().at(0)?.message ?? '',
     hours: this.addTaskForm.hours().errors().some(error => error.kind === 'parse') ? 'Must be a valid number' : this.addTaskForm.hours().errors().at(0)?.message ?? ''
+  }));
+
+  readonly addQuestionState: WritableSignal<QuestionAnswer> = signal<QuestionAnswer>(StateService.emptyQuestionAnswer);
+
+  readonly addQuestionForm: FieldTree<QuestionAnswer> = form(this.addQuestionState, schemaPath => {
+    required(schemaPath.question, { message: 'Please enter a question' });
+  });
+
+  readonly addQuestionFormErrors: Signal<QuestionAnswerErrors> = computed(() => ({
+    question: this.addQuestionForm.question().errors().at(0)?.message ?? '',
+    answer: this.addQuestionForm.answer().errors().at(0)?.message ?? ''
   }));
 
   readonly questionAnswerList: WritableSignal<QuestionAnswer[]> = signal([]);
