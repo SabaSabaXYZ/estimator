@@ -1,5 +1,6 @@
 import { computed, Service, Signal, signal, WritableSignal } from '@angular/core';
 import { FieldTree, form, min, required, validate } from '@angular/forms/signals';
+import { LoadResult, SaveResult } from '../electron-types';
 
 export type QuestionAnswer = {
   id: number;
@@ -13,8 +14,49 @@ export type EstimationItem = {
   hours: number;
 };
 
+export type AppState = {
+  questionAnswerList: QuestionAnswer[];
+  estimationItemList: EstimationItem[];
+};
+
 export type EstimationItemErrors = Record<keyof EstimationItem, string>;
 export type QuestionAnswerErrors = Record<keyof QuestionAnswer, string>;
+
+export function isAppState(value: unknown): value is AppState {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  if (!Object.hasOwn(value, 'questionAnswerList') || !Object.hasOwn(value, 'estimationItemList')) {
+    return false;
+  }
+  const semiparsedValue: AppState = value as AppState;
+  if (!Array.isArray(semiparsedValue.questionAnswerList) || !Array.isArray(semiparsedValue.estimationItemList)) {
+    return false;
+  }
+  return semiparsedValue.questionAnswerList.every(isQuestionAnswer) && semiparsedValue.estimationItemList.every(isEstimationItem);
+}
+
+export function isQuestionAnswer(value: unknown): value is QuestionAnswer {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  if (!Object.hasOwn(value, 'id') || !Object.hasOwn(value, 'question') || !Object.hasOwn(value, 'answer')) {
+    return false;
+  }
+  const semiparsedValue: QuestionAnswer = value as QuestionAnswer;
+  return Number.isFinite(semiparsedValue.id) && typeof semiparsedValue.question === 'string' && typeof semiparsedValue.answer === 'string';
+}
+
+export function isEstimationItem(value: unknown): value is EstimationItem {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+  if (!Object.hasOwn(value, 'id') || !Object.hasOwn(value, 'description') || !Object.hasOwn(value, 'hours')) {
+    return false;
+  }
+  const semiparsedValue: EstimationItem = value as EstimationItem;
+  return Number.isFinite(semiparsedValue.id) && typeof semiparsedValue.description === 'string' && Number.isFinite(semiparsedValue.hours);
+}
 
 @Service()
 export class StateService {
@@ -87,5 +129,31 @@ export class StateService {
       .join('');
     return [questionAnswerString, estimationString, total].filter(x => x.length > 0).join('\n');
   });
+
+  readonly appState: Signal<AppState> = computed(() => ({
+    questionAnswerList: this.questionAnswerList(),
+    estimationItemList: this.estimationList()
+  }));
+
+  async saveFile(payload: AppState): Promise<boolean> {
+    if (!window.electronAPI) {
+      console.error('Not running inside Electron');
+      return false;
+    }
+    const result: SaveResult = await window.electronAPI.saveFile(payload);
+    return result.success;
+  }
+
+  async loadFile(): Promise<AppState | null> {
+    if (!window.electronAPI) {
+      console.error('Not running inside Electron');
+      return null;
+    }
+    const result: LoadResult = await window.electronAPI.loadFile();
+    if (result.success && isAppState(result.data)) {
+      return result.data;
+    }
+    return null;
+  }
 
 }
