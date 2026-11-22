@@ -62,7 +62,9 @@ export class Estimate {
       return;
     }
     this.deleteTask(this.state.addTaskForm().value());
-    this.state.estimationList.update(list => ([...list, this.state.addTaskForm().value()]));
+    const lastId: number = this.state.estimationList().at(-1)?.id ?? 0;
+    const newValue: EstimationItem = { ...this.state.addTaskForm().value(), id: lastId + 1 };
+    this.state.estimationList.update(list => ([...list, newValue]));
     this.state.addTaskForm().reset(StateService.emptyEstimationItem);
   }
 

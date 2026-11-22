@@ -58,7 +58,9 @@ export class Analysis {
       return;
     }
     this.deleteQuestionAnswer(this.state.addQuestionForm().value());
-    this.state.questionAnswerList.update(list => ([...list, this.state.addQuestionForm().value()]));
+    const lastId: number = this.state.questionAnswerList().at(-1)?.id ?? 0;
+    const newValue: QuestionAnswer = { ...this.state.addQuestionForm().value(), id: lastId + 1 };
+    this.state.questionAnswerList.update(list => ([...list, newValue]));
     this.state.addQuestionForm().reset(StateService.emptyQuestionAnswer);
   }
 
