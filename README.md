@@ -17,4 +17,3 @@
 - All state is captured in a singleton service.
 
 TODO: Add save and load functionality.
-TODO: Add export functionality so that the entire state is exported as a markdown description.
