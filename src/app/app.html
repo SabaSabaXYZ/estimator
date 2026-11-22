@@ -15,6 +15,7 @@
       [routerLinkActiveOptions]="{ exact: true }"
       ariaCurrentWhenActive="page">Analysis</a>
   </mat-toolbar>
+  <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>
 </nav>
 <main>
   <router-outlet></router-outlet>

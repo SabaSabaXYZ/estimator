@@ -56,6 +56,15 @@ export class StateService {
   }));
 
   readonly questionAnswerList: WritableSignal<QuestionAnswer[]> = signal([]);
+  readonly analysisPercentage: Signal<number> = computed(() => {
+    const questionAnswerList: QuestionAnswer[] = this.questionAnswerList();
+    const questionCount: number = questionAnswerList.length;
+    if (questionCount === 0) {
+      return 100;
+    }
+    const answerCount: number = questionAnswerList.filter(({ answer }) => answer !== '').length;
+    return (answerCount * 100) / questionCount;
+  });
   readonly estimationList: WritableSignal<EstimationItem[]> = signal([]);
   private readonly buffer: WritableSignal<number> = signal(0);
   readonly bufferForm: FieldTree<number> = form(this.buffer, schemaPath => min(schemaPath, 0, { message: 'Buffer must not be negative' }));
