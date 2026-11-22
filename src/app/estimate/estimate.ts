@@ -40,4 +40,8 @@ export class Estimate {
     this.state.estimationList.update(list => ([...list, this.addTaskForm().value()]));
   }
 
+  clearTasks(): void {
+    this.state.estimationList.set([]);
+  }
+
 }

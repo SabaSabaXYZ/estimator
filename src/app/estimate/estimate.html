@@ -2,13 +2,13 @@
   <span class="item">
     <mat-form-field>
       <mat-label>Task Description</mat-label>
-      <input type="text" matInput [formField]="addTaskForm.description">
+      <input type="text" matInput [formField]="addTaskForm.description" (keydown.enter)="addTask()">
     </mat-form-field>
   </span>
   <span class="item">
     <mat-form-field>
       <mat-label>Hours</mat-label>
-      <input type="number" matInput [formField]="addTaskForm.hours">
+      <input type="number" matInput [formField]="addTaskForm.hours" (keydown.enter)="addTask()">
       <mat-hint>Hours required for development and testing</mat-hint>
     </mat-form-field>
   </span>
@@ -16,6 +16,12 @@
     <button matFab extended (click)="addTask()">
       <mat-icon>add_task</mat-icon>
       Add Task
+    </button>
+  </span>
+  <span class="item">
+    <button matFab extended (click)="clearTasks()">
+      <mat-icon>clear_all</mat-icon>
+      Clear All Tasks
     </button>
   </span>
 </div>
