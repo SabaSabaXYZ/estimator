@@ -78,7 +78,7 @@ export class StateService {
   readonly fullAnalysis: Signal<string> = computed(() => {
     const questionAnswerList: QuestionAnswer[] = this.questionAnswerList();
     const estimationList: EstimationItem[] = this.estimationList();
-    const total: string = `Total: ${this.total()}`;
+    const total = `Total: ${this.total()}`;
     const questionAnswerString: string = questionAnswerList
       .map(({ question, answer }) => `Q: ${question}\nA: ${answer}\n`)
       .join('\n');
