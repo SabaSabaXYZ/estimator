@@ -2,6 +2,7 @@ import { computed, Service, Signal, signal, WritableSignal } from '@angular/core
 import { FieldTree, form, min, required, validate } from '@angular/forms/signals';
 
 export type QuestionAnswer = {
+  id: number;
   question: string;
   answer: string;
 };
@@ -23,6 +24,7 @@ export class StateService {
   };
 
   static readonly emptyQuestionAnswer: QuestionAnswer = {
+    id: 0,
     question: '',
     answer: ''
   };
@@ -48,6 +50,7 @@ export class StateService {
   });
 
   readonly addQuestionFormErrors: Signal<QuestionAnswerErrors> = computed(() => ({
+    id: this.addQuestionForm.id().errors().at(0)?.message ?? '',
     question: this.addQuestionForm.question().errors().at(0)?.message ?? '',
     answer: this.addQuestionForm.answer().errors().at(0)?.message ?? ''
   }));

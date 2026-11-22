@@ -4,14 +4,14 @@
   <span class="item">
     <mat-form-field>
       <mat-label>Question</mat-label>
-      <input type="text" matInput [formField]="state.addQuestionForm.question" (keydown.enter)="addQuestionAnswer()">
+      <input type="text" matInput [formField]="state.addQuestionForm.question" (keydown.enter)="handleSubmit()">
       <mat-error>{{ state.addQuestionFormErrors().question }}</mat-error>
     </mat-form-field>
   </span>
   <span class="item">
     <mat-form-field>
       <mat-label>Answer</mat-label>
-      <input type="text" matInput [formField]="state.addQuestionForm.answer" (keydown.enter)="addQuestionAnswer()">
+      <input type="text" matInput [formField]="state.addQuestionForm.answer" (keydown.enter)="handleSubmit()">
       <mat-error>{{ state.addQuestionFormErrors().answer }}</mat-error>
     </mat-form-field>
   </span>
@@ -23,6 +23,14 @@
       Add Question &amp; Answer
     </button>
   </span>
+  @if (state.addQuestionForm().value().id !== 0) {
+  <span class="item">
+    <button matFab extended (click)="updateQuestionAnswer()">
+      <mat-icon>edit</mat-icon>
+      Update Question &amp; Answer
+    </button>
+  </span>
+  }
 </div>
 <h2>View Questions and Answers</h2>
 <div class="section">
