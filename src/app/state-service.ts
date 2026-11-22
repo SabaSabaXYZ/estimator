@@ -1,5 +1,5 @@
 import { computed, Service, Signal, signal, WritableSignal } from '@angular/core';
-import { FieldTree, form, min, required } from '@angular/forms/signals';
+import { FieldTree, form, min, required, validate } from '@angular/forms/signals';
 
 export type QuestionAnswer = {
   question: string;
@@ -10,6 +10,8 @@ export type EstimationItem = {
   description: string;
   hours: number;
 };
+
+export type EstimationItemErrors = Record<keyof EstimationItem, string>;
 
 @Service()
 export class StateService {
@@ -25,7 +27,13 @@ export class StateService {
     required(schemaPath.description, { message: 'Please enter a task description' });
     required(schemaPath.hours, { message: 'Please enter the hours required' });
     min(schemaPath.hours, 1, { message: 'Hours must be positive' });
+    validate(schemaPath.hours, ({ value }) => !Number.isSafeInteger(value()) ? { kind: 'integer', message: 'Must be a whole number' } : undefined);
   });
+
+  readonly addTaskFormErrors: Signal<EstimationItemErrors> = computed(() => ({
+    description: this.addTaskForm.description().errors().at(0)?.message ?? '',
+    hours: this.addTaskForm.hours().errors().some(error => error.kind === 'parse') ? 'Must be a valid number' : this.addTaskForm.hours().errors().at(0)?.message ?? ''
+  }));
 
   readonly questionAnswerList: WritableSignal<QuestionAnswer[]> = signal([]);
   readonly estimationList: WritableSignal<EstimationItem[]> = signal([]);

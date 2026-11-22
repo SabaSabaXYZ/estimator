@@ -26,7 +26,7 @@ export class Estimate {
   readonly injector: Injector = inject(Injector);
   readonly state: StateService = inject(StateService);
   readonly dataSource: SignalDataSource<EstimationItem> = new SignalDataSource<EstimationItem>(this.state.estimationList, this.injector);
-  readonly displayedColumns: (keyof EstimationItem)[] = ['description', 'hours'];
+  readonly displayedColumns: (keyof EstimationItem | 'delete')[] = ['description', 'hours', 'delete'];
 
   addTask(): void {
     if (this.state.addTaskForm().invalid()) {
@@ -39,6 +39,10 @@ export class Estimate {
 
   clearTasks(): void {
     this.state.estimationList.set([]);
+  }
+
+  deleteTask(task: EstimationItem): void {
+    this.state.estimationList.update(list => list.filter(item => item !== task));
   }
 
 }

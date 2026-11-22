@@ -19,9 +19,7 @@
     <mat-form-field>
       <mat-label>Task Description</mat-label>
       <input type="text" matInput [formField]="state.addTaskForm.description" (keydown.enter)="addTask()">
-      @for (error of state.addTaskForm.description().errors(); track error) {
-      <mat-error>{{ error.message }}</mat-error>
-      }
+      <mat-error>{{ state.addTaskFormErrors().description }}</mat-error>
     </mat-form-field>
   </span>
   <span class="item">
@@ -29,9 +27,7 @@
       <mat-label>Hours</mat-label>
       <input type="number" matInput [formField]="state.addTaskForm.hours" (keydown.enter)="addTask()">
       <mat-hint>Hours required for development and testing</mat-hint>
-      @for (error of state.addTaskForm.hours().errors(); track error) {
-      <mat-error>{{ error.message }}</mat-error>
-      }
+      <mat-error>{{ state.addTaskFormErrors().hours }}</mat-error>
     </mat-form-field>
   </span>
 </div>
@@ -60,6 +56,15 @@
     <ng-container matColumnDef="hours">
       <th mat-header-cell *matHeaderCellDef>Hours</th>
       <td mat-cell *matCellDef="let element">{{ element.hours }}</td>
+      <td mat-footer-cell *matFooterCellDef>{{ state.subtotal() }}</td>
+    </ng-container>
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton (click)="deleteTask(element)" aria-label="Delete task">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </td>
       <td mat-footer-cell *matFooterCellDef>{{ state.subtotal() }}</td>
     </ng-container>
     <ng-container matColumnDef="total">
