@@ -26,7 +26,7 @@ export class Analysis {
   readonly injector: Injector = inject(Injector);
   readonly state: StateService = inject(StateService);
   readonly dataSource: SignalDataSource<QuestionAnswer> = new SignalDataSource<QuestionAnswer>(this.state.questionAnswerList, this.injector);
-  readonly displayedColumns: (keyof QuestionAnswer | 'edit' | 'delete')[] = ['id', 'question', 'answer', 'edit', 'delete'];
+  readonly displayedColumns: (keyof QuestionAnswer | 'edit' | 'delete')[] = ['question', 'answer', 'edit', 'delete'];
 
   normalizeIds(): void {
     this.state.questionAnswerList.update(list => [...list].sort((a, b) => a.id - b.id).map(({ question, answer }, id) => ({ id: id + 1, question, answer })));
