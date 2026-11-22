@@ -1,5 +1,5 @@
 import { computed, Service, Signal, signal, WritableSignal } from '@angular/core';
-import { FieldTree, form, min } from '@angular/forms/signals';
+import { FieldTree, form, min, required } from '@angular/forms/signals';
 
 export type QuestionAnswer = {
   question: string;
@@ -13,6 +13,19 @@ export type EstimationItem = {
 
 @Service()
 export class StateService {
+
+  static readonly emptyEstimationItem: EstimationItem = {
+    description: '',
+    hours: 0
+  };
+
+  readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>(StateService.emptyEstimationItem);
+
+  readonly addTaskForm: FieldTree<EstimationItem> = form(this.addTaskState, schemaPath => {
+    required(schemaPath.description, { message: 'Please enter a task description' });
+    required(schemaPath.hours, { message: 'Please enter the hours required' });
+    min(schemaPath.hours, 1, { message: 'Hours must be positive' });
+  });
 
   readonly questionAnswerList: WritableSignal<QuestionAnswer[]> = signal([]);
   readonly estimationList: WritableSignal<EstimationItem[]> = signal([]);

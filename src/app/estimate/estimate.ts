@@ -1,6 +1,6 @@
-import { Component, inject, Injector, signal, WritableSignal } from '@angular/core';
+import { Component, inject, Injector } from '@angular/core';
 import { EstimationItem, StateService } from '../state-service';
-import { FieldTree, form, FormField, min, required } from '@angular/forms/signals';
+import { FormField } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,26 +28,13 @@ export class Estimate {
   readonly dataSource: SignalDataSource<EstimationItem> = new SignalDataSource<EstimationItem>(this.state.estimationList, this.injector);
   readonly displayedColumns: (keyof EstimationItem)[] = ['description', 'hours'];
 
-  readonly emptyEstimationItem: EstimationItem = {
-    description: '',
-    hours: 0
-  };
-
-  readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>(this.emptyEstimationItem);
-
-  readonly addTaskForm: FieldTree<EstimationItem> = form(this.addTaskState, schemaPath => {
-    required(schemaPath.description, { message: 'Please enter a task description' });
-    required(schemaPath.hours, { message: 'Please enter the hours required' });
-    min(schemaPath.hours, 1, { message: 'Hours must be positive' });
-  });
-
   addTask(): void {
-    if (this.addTaskForm().invalid()) {
-      this.addTaskForm().markAsTouched();
+    if (this.state.addTaskForm().invalid()) {
+      this.state.addTaskForm().markAsTouched();
       return;
     }
-    this.state.estimationList.update(list => ([...list, this.addTaskForm().value()]));
-    this.addTaskForm().reset(this.emptyEstimationItem);
+    this.state.estimationList.update(list => ([...list, this.state.addTaskForm().value()]));
+    this.state.addTaskForm().reset(StateService.emptyEstimationItem);
   }
 
   clearTasks(): void {

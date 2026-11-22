@@ -18,8 +18,8 @@
   <span class="item">
     <mat-form-field>
       <mat-label>Task Description</mat-label>
-      <input type="text" matInput [formField]="addTaskForm.description" (keydown.enter)="addTask()">
-      @for (error of addTaskForm.description().errors(); track error) {
+      <input type="text" matInput [formField]="state.addTaskForm.description" (keydown.enter)="addTask()">
+      @for (error of state.addTaskForm.description().errors(); track error) {
       <mat-error>{{ error.message }}</mat-error>
       }
     </mat-form-field>
@@ -27,9 +27,9 @@
   <span class="item">
     <mat-form-field>
       <mat-label>Hours</mat-label>
-      <input type="number" matInput [formField]="addTaskForm.hours" (keydown.enter)="addTask()">
+      <input type="number" matInput [formField]="state.addTaskForm.hours" (keydown.enter)="addTask()">
       <mat-hint>Hours required for development and testing</mat-hint>
-      @for (error of addTaskForm.hours().errors(); track error) {
+      @for (error of state.addTaskForm.hours().errors(); track error) {
       <mat-error>{{ error.message }}</mat-error>
       }
     </mat-form-field>
