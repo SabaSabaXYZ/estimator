@@ -8,6 +8,7 @@ export type QuestionAnswer = {
 };
 
 export type EstimationItem = {
+  id: number;
   description: string;
   hours: number;
 };
@@ -19,6 +20,7 @@ export type QuestionAnswerErrors = Record<keyof QuestionAnswer, string>;
 export class StateService {
 
   static readonly emptyEstimationItem: EstimationItem = {
+    id: 0,
     description: '',
     hours: 0
   };
@@ -39,6 +41,7 @@ export class StateService {
   });
 
   readonly addTaskFormErrors: Signal<EstimationItemErrors> = computed(() => ({
+    id: this.addTaskForm.id().errors().at(0)?.message ?? '',
     description: this.addTaskForm.description().errors().at(0)?.message ?? '',
     hours: this.addTaskForm.hours().errors().some(error => error.kind === 'parse') ? 'Must be a valid number' : this.addTaskForm.hours().errors().at(0)?.message ?? ''
   }));

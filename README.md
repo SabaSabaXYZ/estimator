@@ -16,6 +16,5 @@
 - Analysis → Question and answer list.
 - All state is captured in a singleton service.
 
-TODO: Update Estimate page so that tasks can be edited just like in the Analysis page.
 TODO: Add save and load functionality.
 TODO: Add export functionality so that the entire state is exported as a markdown description.

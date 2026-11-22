@@ -18,14 +18,14 @@
   <span class="item">
     <mat-form-field>
       <mat-label>Task Description</mat-label>
-      <input type="text" matInput [formField]="state.addTaskForm.description" (keydown.enter)="addTask()">
+      <input type="text" matInput [formField]="state.addTaskForm.description" (keydown.enter)="handleSubmit()">
       <mat-error>{{ state.addTaskFormErrors().description }}</mat-error>
     </mat-form-field>
   </span>
   <span class="item">
     <mat-form-field>
       <mat-label>Hours</mat-label>
-      <input type="number" matInput [formField]="state.addTaskForm.hours" (keydown.enter)="addTask()">
+      <input type="number" matInput [formField]="state.addTaskForm.hours" (keydown.enter)="handleSubmit()">
       <mat-hint>Hours required for development and testing</mat-hint>
       <mat-error>{{ state.addTaskFormErrors().hours }}</mat-error>
     </mat-form-field>
@@ -38,12 +38,14 @@
       Add Task
     </button>
   </span>
+  @if (state.addTaskForm().value().id !== 0) {
   <span class="item">
-    <button matFab extended (click)="clearTasks()">
-      <mat-icon>clear_all</mat-icon>
-      Clear All Tasks
+    <button matFab extended (click)="updateTask()">
+      <mat-icon>edit</mat-icon>
+      Update Task
     </button>
   </span>
+  }
 </div>
 <h2>View Tasks</h2>
 <div class="section">
@@ -57,6 +59,15 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Hours</th>
       <td mat-cell *matCellDef="let element">{{ element.hours }}</td>
       <td mat-footer-cell *matFooterCellDef>{{ state.subtotal() }}</td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let element">
+        <button matIconButton (click)="editTask(element)" aria-label="Edit task">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef>Delete</th>
