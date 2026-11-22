@@ -14,6 +14,10 @@
       routerLinkActive="active-link"
       [routerLinkActiveOptions]="{ exact: true }"
       ariaCurrentWhenActive="page">Analysis</a>
+    <span class="toolbar-space"></span>
+    <button type="button" matIconButton [cdkCopyToClipboard]="state.fullAnalysis()" [cdkCopyToClipboardAttempts]="5">
+      <mat-icon>content_copy</mat-icon>
+    </button>
   </mat-toolbar>
   <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>
 </nav>
