@@ -21,6 +21,7 @@ export class SignalDataSource<T> extends DataSource<T> {
   }
 
   override disconnect(): void {
+    // Do nothing
   }
 
 }

@@ -1,10 +1,29 @@
 <mat-form-field>
-  <mat-label>Task</mat-label>
-  <input type="text" matInput>
-  <button
-    matIconButton
-    matSuffix
-    aria-label="Add task">
-    <mat-icon>add_task</mat-icon>
-  </button>
+  <mat-label>Task Description</mat-label>
+  <input type="text" matInput [formField]="addTaskForm.description">
 </mat-form-field>
+<mat-form-field>
+  <mat-label>Hours</mat-label>
+  <input type="number" matInput [formField]="addTaskForm.hours">
+  <mat-hint>Hours required for development and testing</mat-hint>
+</mat-form-field>
+<button matFab extended (click)="addTask()">
+  <mat-icon>add_task</mat-icon>
+  Add Task
+</button>
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>Task</th>
+    <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+  </ng-container>
+  <ng-container matColumnDef="hours">
+    <th mat-header-cell *matHeaderCellDef>Hours</th>
+    <td mat-cell *matCellDef="let element">{{ element.hours }}</td>
+  </ng-container>
+  <ng-container matColumnDef="enabled">
+    <th mat-header-cell *matHeaderCellDef>Included</th>
+    <td mat-cell *matCellDef="let element">{{ element.enabled }}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</mat-table>
