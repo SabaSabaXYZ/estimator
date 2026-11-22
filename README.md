@@ -16,4 +16,5 @@
 - Analysis → Question and answer list.
 - All state is captured in a singleton service.
 
+TODO: Fix edit functionality.
 TODO: Add save and load functionality.
