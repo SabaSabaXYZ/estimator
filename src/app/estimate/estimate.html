@@ -6,7 +6,7 @@
       <mat-label>Buffer</mat-label>
       <input type="number" matInput [formField]="state.bufferForm">
       <mat-icon matSuffix>percent</mat-icon>
-      <mat-hint>Determines the buffer to add to the subtotal to produce the total hours</mat-hint>
+      <mat-hint>Determines the buffer to add to the subtotal to calculate the total hours</mat-hint>
       @for (error of state.bufferForm().errors(); track error) {
       <mat-error>{{ error.message }}</mat-error>
       }
