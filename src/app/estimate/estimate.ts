@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { EstimationItem, StateService } from '../state-service';
 import { SignalDataSource } from '../signal-data-source';
-import { FieldTree, form, FormField } from '@angular/forms/signals';
+import { FieldTree, form, FormField, required } from '@angular/forms/signals';
 
 @Component({
   imports: [
@@ -28,16 +28,26 @@ export class Estimate {
   readonly dataSource: SignalDataSource<EstimationItem> = new SignalDataSource<EstimationItem>(this.state.estimationList, this.injector);
   readonly displayedColumns: (keyof EstimationItem)[] = ['description', 'hours', 'enabled'];
 
-  readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>({
+  readonly emptyEstimationItem: EstimationItem = {
     description: '',
     hours: 0,
     enabled: true
+  };
+
+  readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>(this.emptyEstimationItem);
+
+  readonly addTaskForm: FieldTree<EstimationItem> = form(this.addTaskState, schemaPath => {
+    required(schemaPath.description, { message: 'Please enter a task description' });
+    required(schemaPath.hours, { message: 'Please enter the hours required' });
   });
 
-  readonly addTaskForm: FieldTree<EstimationItem> = form(this.addTaskState);
-
   addTask(): void {
+    if (this.addTaskForm().invalid()) {
+      this.addTaskForm().markAsTouched();
+      return;
+    }
     this.state.estimationList.update(list => ([...list, this.addTaskForm().value()]));
+    this.addTaskForm().reset(this.emptyEstimationItem);
   }
 
   clearTasks(): void {
