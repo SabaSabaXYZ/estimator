@@ -1,5 +1,4 @@
 import { Component, inject, Injector, signal, WritableSignal } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
 import { EstimationItem, StateService } from '../state-service';
 import { FieldTree, form, FormField, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +10,6 @@ import { SignalDataSource } from '../signal-data-source';
 
 @Component({
   imports: [
-    CurrencyPipe,
     FormField,
     MatButtonModule,
     MatFormFieldModule,
@@ -41,6 +39,10 @@ export class Estimate {
     required(schemaPath.description, { message: 'Please enter a task description' });
     required(schemaPath.hours, { message: 'Please enter the hours required' });
     min(schemaPath.hours, 1, { message: 'Hours must be positive' });
+  });
+
+  readonly bufferForm: FieldTree<number> = form(this.state.buffer, schemaPath => {
+    min(schemaPath, 0, { message: 'Buffer must not be negative' });
   });
 
   addTask(): void {
