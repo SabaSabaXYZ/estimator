@@ -1,7 +1,7 @@
 import { Component, inject, Injector, signal, WritableSignal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { EstimationItem, StateService } from '../state-service';
-import { FieldTree, form, FormField, required } from '@angular/forms/signals';
+import { FieldTree, form, FormField, min, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,6 +40,7 @@ export class Estimate {
   readonly addTaskForm: FieldTree<EstimationItem> = form(this.addTaskState, schemaPath => {
     required(schemaPath.description, { message: 'Please enter a task description' });
     required(schemaPath.hours, { message: 'Please enter the hours required' });
+    min(schemaPath.hours, 1, { message: 'Hours must be positive' });
   });
 
   addTask(): void {
