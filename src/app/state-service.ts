@@ -75,4 +75,17 @@ export class StateService {
   readonly subtotal: Signal<number> = computed(() => this.estimationList().map(({ hours }) => hours).reduce((acc, val) => acc + val, 0));
   readonly total: Signal<number> = computed(() => Math.ceil(this.subtotal() * (1 + this.bufferValue() / 100)));
 
+  readonly fullAnalysis: Signal<string> = computed(() => {
+    const questionAnswerList: QuestionAnswer[] = this.questionAnswerList();
+    const estimationList: EstimationItem[] = this.estimationList();
+    const total: string = `Total: ${this.total()}`;
+    const questionAnswerString: string = questionAnswerList
+      .map(({ question, answer }) => `Q: ${question}\nA: ${answer}\n`)
+      .join('\n');
+    const estimationString: string = estimationList
+      .map(({ description, hours }) => `- ${description} → ${hours}\n`)
+      .join('');
+    return [questionAnswerString, estimationString, total].filter(x => x.length > 0).join('\n');
+  });
+
 }
