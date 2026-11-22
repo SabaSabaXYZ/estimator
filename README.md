@@ -15,3 +15,7 @@
 - Estimate → Table, along with a field to set the buffer percentage. Also displays the subtotal estimate and the total estimate (i.e. with the buffer and rounded up).
 - Analysis → Question and answer list.
 - All state is captured in a singleton service.
+
+TODO: Update Estimate page so that tasks can be edited just like in the Analysis page.
+TODO: Add save and load functionality.
+TODO: Add export functionality so that the entire state is exported as a markdown description.
