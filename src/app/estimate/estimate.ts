@@ -41,10 +41,6 @@ export class Estimate {
     min(schemaPath.hours, 1, { message: 'Hours must be positive' });
   });
 
-  readonly bufferForm: FieldTree<number> = form(this.state.buffer, schemaPath => {
-    min(schemaPath, 0, { message: 'Buffer must not be negative' });
-  });
-
   addTask(): void {
     if (this.addTaskForm().invalid()) {
       this.addTaskForm().markAsTouched();
