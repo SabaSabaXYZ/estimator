@@ -1,4 +1,4 @@
-import { Component, inject, Injector } from '@angular/core';
+import { Component, effect, inject, Injector, Signal, viewChild } from '@angular/core';
 import { EstimationItem, StateService } from '../state-service';
 import { FormField } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { SignalDataSource } from '../signal-data-source';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   imports: [
@@ -15,6 +16,7 @@ import { SignalDataSource } from '../signal-data-source';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatSortModule,
     MatTableModule
   ],
   selector: 'app-estimate',
@@ -25,8 +27,10 @@ export class Estimate {
 
   readonly injector: Injector = inject(Injector);
   readonly state: StateService = inject(StateService);
+  readonly sort: Signal<MatSort> = viewChild.required(MatSort);
   readonly dataSource: SignalDataSource<EstimationItem> = new SignalDataSource<EstimationItem>(this.state.estimationList, this.injector);
   readonly displayedColumns: (keyof EstimationItem | 'delete')[] = ['description', 'hours', 'delete'];
+  readonly updateSort = effect(() => this.dataSource.matSort = this.sort());
 
   addTask(): void {
     if (this.state.addTaskForm().invalid()) {
