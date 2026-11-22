@@ -1,15 +1,17 @@
 import { Component, inject, Injector, signal, WritableSignal } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { EstimationItem, StateService } from '../state-service';
+import { FieldTree, form, FormField, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { EstimationItem, StateService } from '../state-service';
 import { SignalDataSource } from '../signal-data-source';
-import { FieldTree, form, FormField, required } from '@angular/forms/signals';
 
 @Component({
   imports: [
+    CurrencyPipe,
     FormField,
     MatButtonModule,
     MatFormFieldModule,

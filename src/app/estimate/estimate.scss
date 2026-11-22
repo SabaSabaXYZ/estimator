@@ -24,3 +24,7 @@ div.section + div.section {
 .primary-fab-button {
   @include mat.fab-overrides((container-color: var(--mat-sys-primary), foreground-color: var(--mat-sys-on-primary)));
 }
+
+.total-row {
+  font-weight: bold;
+}
