@@ -18,6 +18,10 @@ div.section {
 }
 
 div.section + div.section {
+  margin-top: 1em;
+}
+
+div.section + h2 {
   margin-top: 2em;
 }
 
@@ -27,4 +31,14 @@ div.section + div.section {
 
 .total-row {
   font-weight: bold;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

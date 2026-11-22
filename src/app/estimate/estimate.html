@@ -1,13 +1,19 @@
+<h1>Estimate</h1>
+<h2>Global Settings</h2>
 <div class="section">
   <span class="item">
     <mat-form-field>
       <mat-label>Buffer</mat-label>
-      <input type="number" matInput [formField]="bufferForm" step="0.01">
+      <input type="number" matInput [formField]="bufferForm">
       <mat-icon matSuffix>percent</mat-icon>
       <mat-hint>Determines the buffer to add to the subtotal to produce the total hours</mat-hint>
+      @for (error of bufferForm().errors(); track error) {
+      <mat-error>{{ error.message }}</mat-error>
+      }
     </mat-form-field>
   </span>
 </div>
+<h2>Add Task</h2>
 <div class="section">
   <span class="item">
     <mat-form-field>
@@ -43,6 +49,7 @@
     </button>
   </span>
 </div>
+<h2>View Tasks</h2>
 <div class="section">
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="description">
