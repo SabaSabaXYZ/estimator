@@ -15,8 +15,14 @@
       [routerLinkActiveOptions]="{ exact: true }"
       ariaCurrentWhenActive="page">Analysis</a>
     <span class="toolbar-space"></span>
-    <button type="button" matIconButton [cdkCopyToClipboard]="state.fullAnalysis()" [cdkCopyToClipboardAttempts]="5">
+    <button type="button" matIconButton [cdkCopyToClipboard]="state.fullAnalysis()" [cdkCopyToClipboardAttempts]="5" aria-label="Copy Estimation">
       <mat-icon>content_copy</mat-icon>
+    </button>
+    <button type="button" matIconButton (click)="state.saveFile()" aria-label="Save Estimation">
+      <mat-icon>save_as</mat-icon>
+    </button>
+    <button type="button" matIconButton (click)="loadFile()" aria-label="Load Estimation">
+      <mat-icon>file_open</mat-icon>
     </button>
   </mat-toolbar>
   <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>

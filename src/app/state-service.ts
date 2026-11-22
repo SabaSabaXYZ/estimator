@@ -15,6 +15,7 @@ export type EstimationItem = {
 };
 
 export type AppState = {
+  buffer: number;
   questionAnswerList: QuestionAnswer[];
   estimationItemList: EstimationItem[];
 };
@@ -26,11 +27,11 @@ export function isAppState(value: unknown): value is AppState {
   if (typeof value !== 'object' || value === null) {
     return false;
   }
-  if (!Object.hasOwn(value, 'questionAnswerList') || !Object.hasOwn(value, 'estimationItemList')) {
+  if (!Object.hasOwn(value, 'buffer') || !Object.hasOwn(value, 'questionAnswerList') || !Object.hasOwn(value, 'estimationItemList')) {
     return false;
   }
   const semiparsedValue: AppState = value as AppState;
-  if (!Array.isArray(semiparsedValue.questionAnswerList) || !Array.isArray(semiparsedValue.estimationItemList)) {
+  if (!Number.isFinite(semiparsedValue.buffer) || !Array.isArray(semiparsedValue.questionAnswerList) || !Array.isArray(semiparsedValue.estimationItemList)) {
     return false;
   }
   return semiparsedValue.questionAnswerList.every(isQuestionAnswer) && semiparsedValue.estimationItemList.every(isEstimationItem);
@@ -131,16 +132,17 @@ export class StateService {
   });
 
   readonly appState: Signal<AppState> = computed(() => ({
+    buffer: this.bufferValue(),
     questionAnswerList: this.questionAnswerList(),
     estimationItemList: this.estimationList()
   }));
 
-  async saveFile(payload: AppState): Promise<boolean> {
+  async saveFile(): Promise<boolean> {
     if (!window.electronAPI) {
       console.error('Not running inside Electron');
       return false;
     }
-    const result: SaveResult = await window.electronAPI.saveFile(payload);
+    const result: SaveResult = await window.electronAPI.saveFile(this.appState());
     return result.success;
   }
 

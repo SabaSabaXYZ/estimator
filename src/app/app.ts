@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { StateService } from './state-service';
+import { AppState, StateService } from './state-service';
 
 @Component({
   imports: [
@@ -25,4 +25,15 @@ import { StateService } from './state-service';
 export class App {
 
   readonly state: StateService = inject(StateService);
+
+  async loadFile(): Promise<void> {
+    const appState: AppState | null = await this.state.loadFile();
+    if (appState === null) {
+      return;
+    }
+    this.state.bufferForm().value.set(appState.buffer);
+    this.state.questionAnswerList.set(appState.questionAnswerList);
+    this.state.estimationList.set(appState.estimationItemList);
+  }
+
 }

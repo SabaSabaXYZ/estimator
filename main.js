@@ -16,7 +16,7 @@ ipcMain.handle('file:save', async (_event, content) => {
 });
 
 ipcMain.handle('file:load', async () => {
-  const { canceled, filePaths } = await dialog.showSaveDialog({
+  const { canceled, filePaths } = await dialog.showOpenDialog({
     title: 'Load Estimation',
     properties: ['openFile'],
     filters: [{ name: 'JSON Files', extensions: ['json'] }]

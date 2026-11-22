@@ -15,5 +15,3 @@
 - Estimate → Table, along with a field to set the buffer percentage. Also displays the subtotal estimate and the total estimate (i.e. with the buffer and rounded up).
 - Analysis → Question and answer list.
 - All state is captured in a singleton service.
-
-TODO: Add save and load functionality.
