@@ -26,12 +26,11 @@ export class Estimate {
   readonly injector: Injector = inject(Injector);
   readonly state: StateService = inject(StateService);
   readonly dataSource: SignalDataSource<EstimationItem> = new SignalDataSource<EstimationItem>(this.state.estimationList, this.injector);
-  readonly displayedColumns: (keyof EstimationItem)[] = ['description', 'hours', 'enabled'];
+  readonly displayedColumns: (keyof EstimationItem)[] = ['description', 'hours'];
 
   readonly emptyEstimationItem: EstimationItem = {
     description: '',
-    hours: 0,
-    enabled: true
+    hours: 0
   };
 
   readonly addTaskState: WritableSignal<EstimationItem> = signal<EstimationItem>(this.emptyEstimationItem);

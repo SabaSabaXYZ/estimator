@@ -8,7 +8,6 @@ export type QuestionAnswer = {
 export type EstimationItem = {
   description: string;
   hours: number;
-  enabled: boolean;
 };
 
 @Service()
