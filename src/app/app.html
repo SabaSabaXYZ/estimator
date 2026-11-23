@@ -24,6 +24,13 @@
     <button type="button" matIconButton (click)="loadFile()" aria-label="Load Estimation">
       <mat-icon>file_open</mat-icon>
     </button>
+    <mat-slide-toggle [(ngModel)]="theme.isDark" aria-label="Select theme">
+      @if (theme.theme() === 'dark') {
+      <mat-icon>bedtime</mat-icon>
+      } @else {
+      <mat-icon>sunny</mat-icon>
+      }
+    </mat-slide-toggle>
   </mat-toolbar>
   <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>
 </nav>
