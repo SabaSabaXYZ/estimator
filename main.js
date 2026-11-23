@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
@@ -36,6 +36,15 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
+    }
+  });
+  win.removeMenu();
+  Menu.setApplicationMenu(null);
+  win.webContents.on('before-input-event', (event, input) => {
+    const isReloadKey = input.key.toLowerCase() === 'r' && (input.control || input.meta);
+    const isF5 = input.key === 'F5';
+    if (isReloadKey || isF5) {
+      event.preventDefault();
     }
   });
   win.loadFile(path.join(__dirname, 'dist/estimator/browser/index.html'))
