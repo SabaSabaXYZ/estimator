@@ -121,12 +121,12 @@ export class StateService {
   readonly fullAnalysis: Signal<string> = computed(() => {
     const questionAnswerList: QuestionAnswer[] = this.questionAnswerList();
     const estimationList: EstimationItem[] = this.estimationList();
-    const total = `Total: ${this.total()}`;
+    const total = `Total: ${this.total()} hours`;
     const questionAnswerString: string = questionAnswerList
       .map(({ question, answer }) => `Q: ${question}\nA: ${answer}\n`)
       .join('\n');
     const estimationString: string = estimationList
-      .map(({ description, hours }) => `- ${description} → ${hours}\n`)
+      .map(({ description, hours }) => `- ${description} → ${hours} hours\n`)
       .join('');
     return [questionAnswerString, estimationString, total].filter(x => x.length > 0).join('\n');
   });
