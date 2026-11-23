@@ -8,7 +8,7 @@
     "build": "ng lint && ng build",
     "watch": "ng build --watch --configuration development",
     "electron": "ng lint && ng build --base-href ./ && electron .",
-    "windows": "ng lint && npx electron-builder --win --x64",
+    "windows": "ng lint && ng build && npx electron-builder --win --x64",
     "test": "ng lint && ng test",
     "lint": "ng lint"
   },
