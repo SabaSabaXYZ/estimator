@@ -2,6 +2,15 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 
+ipcMain.handle('file:autosave', async (_event, content) => {
+  try {
+    await fs.writeFile(content.filePath, JSON.stringify(content.data, null, 2), 'utf-8');
+  } catch {
+    return { success: false };
+  }
+  return { success: true };
+});
+
 ipcMain.handle('file:save', async (_event, content) => {
   const { canceled, filePath } = await dialog.showSaveDialog({
     title: 'Save Estimation',

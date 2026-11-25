@@ -1,4 +1,4 @@
-import { AppState, StateService } from './state-service';
+import { StateService } from './state-service';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,10 +9,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ThemeService } from './theme-service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   imports: [
     ClipboardModule,
+    DatePipe,
     FormsModule,
     MatButtonModule,
     MatIconModule,
@@ -31,15 +33,5 @@ export class App {
 
   readonly state: StateService = inject(StateService);
   readonly theme: ThemeService = inject(ThemeService);
-
-  async loadFile(): Promise<void> {
-    const appState: AppState | null = await this.state.loadFile();
-    if (appState === null) {
-      return;
-    }
-    this.state.bufferForm().value.set(appState.buffer);
-    this.state.questionAnswerList.set(appState.questionAnswerList);
-    this.state.estimationList.set(appState.estimationItemList);
-  }
 
 }

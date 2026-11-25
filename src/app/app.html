@@ -21,7 +21,7 @@
     <button type="button" matIconButton (click)="state.saveFile()" aria-label="Save Estimation">
       <mat-icon>save_as</mat-icon>
     </button>
-    <button type="button" matIconButton (click)="loadFile()" aria-label="Load Estimation">
+    <button type="button" matIconButton (click)="state.loadFile()" aria-label="Load Estimation">
       <mat-icon>file_open</mat-icon>
     </button>
     <mat-slide-toggle [(ngModel)]="theme.isDark" aria-label="Select theme">
@@ -31,6 +31,10 @@
       <mat-icon>sunny</mat-icon>
       }
     </mat-slide-toggle>
+    @if (state.lastSaved() !== null) {
+    <span class="toolbar-space"></span>
+    <span class="last-updated">Last Saved: {{ state.lastSaved() | date:'medium' }}</span>
+    }
   </mat-toolbar>
   <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>
 </nav>

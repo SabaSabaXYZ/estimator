@@ -1,6 +1,8 @@
 import { computed, Service, Signal, signal, WritableSignal } from '@angular/core';
 import { FieldTree, form, min, required, validate } from '@angular/forms/signals';
-import { LoadResult, SaveResult } from '../electron-types';
+import { AutoSaveRequest, LoadResult, SaveResult } from '../electron-types';
+import { combineLatest, debounceTime, filter, map, Observable, Subscription } from 'rxjs';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 export type QuestionAnswer = {
   id: number;
@@ -22,6 +24,10 @@ export type AppState = {
 
 export type EstimationItemErrors = Record<keyof EstimationItem, string>;
 export type QuestionAnswerErrors = Record<keyof QuestionAnswer, string>;
+
+export function isNotNull<T>(value: T | null): value is T {
+  return value !== null;
+}
 
 export function isAppState(value: unknown): value is AppState {
   if (typeof value !== 'object' || value === null) {
@@ -117,6 +123,7 @@ export class StateService {
   private readonly bufferValue: Signal<number> = computed(() => this.bufferForm().valid() ? this.bufferForm().value() : 0);
   readonly subtotal: Signal<number> = computed(() => this.estimationList().map(({ hours }) => hours).reduce((acc, val) => acc + val, 0));
   readonly total: Signal<number> = computed(() => Math.ceil(this.subtotal() * (1 + this.bufferValue() / 100)));
+  readonly filePath: WritableSignal<string | null> = signal(null);
 
   readonly fullAnalysis: Signal<string> = computed(() => {
     const questionAnswerList: QuestionAnswer[] = this.questionAnswerList();
@@ -137,25 +144,52 @@ export class StateService {
     estimationItemList: this.estimationList()
   }));
 
-  async saveFile(): Promise<boolean> {
+  readonly autoSaveAction: Observable<AutoSaveRequest> = combineLatest({
+    filePath: toObservable(this.filePath).pipe(filter(isNotNull)),
+    appState: toObservable(this.appState)
+  }).pipe(
+    map(({ appState, filePath }) => ({ data: appState, filePath })),
+    debounceTime(5000),
+    takeUntilDestroyed()
+  );
+
+  readonly lastSaved: WritableSignal<Date | null> = signal(null);
+
+  readonly executeAutoSaveAction: Subscription = this.autoSaveAction.subscribe(request => this.autoSaveFile(request));
+
+  async autoSaveFile(request: AutoSaveRequest): Promise<void> {
     if (!window.electronAPI) {
       console.error('Not running inside Electron');
-      return false;
+      return;
     }
-    const result: SaveResult = await window.electronAPI.saveFile(this.appState());
-    return result.success;
+    await window.electronAPI.autoSaveFile(request);
+    this.lastSaved.set(new Date());
   }
 
-  async loadFile(): Promise<AppState | null> {
+  async saveFile(): Promise<void> {
     if (!window.electronAPI) {
       console.error('Not running inside Electron');
-      return null;
+      return;
+    }
+    const result: SaveResult = await window.electronAPI.saveFile(this.appState());
+    if (result.success) {
+      this.filePath.set(result.filePath);
+      this.lastSaved.set(new Date());
+    }
+  }
+
+  async loadFile(): Promise<void> {
+    if (!window.electronAPI) {
+      console.error('Not running inside Electron');
+      return;
     }
     const result: LoadResult = await window.electronAPI.loadFile();
     if (result.success && isAppState(result.data)) {
-      return result.data;
+      this.filePath.set(result.filePath);
+      this.bufferForm().value.set(result.data.buffer);
+      this.questionAnswerList.set(result.data.questionAnswerList);
+      this.estimationList.set(result.data.estimationItemList);
     }
-    return null;
   }
 
 }

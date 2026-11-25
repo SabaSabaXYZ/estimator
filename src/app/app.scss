@@ -8,6 +8,11 @@ mat-slide-toggle {
   margin-left: 1em;
 }
 
+.last-updated {
+  font: var(--mat-sys-label-large);
+  letter-spacing: var(--mat-sys-label-large-tracking);
+}
+
 nav {
   mat-toolbar {
     a {
