@@ -9,8 +9,9 @@ mat-slide-toggle {
 }
 
 .last-updated {
-  font: var(--mat-sys-label-large);
-  letter-spacing: var(--mat-sys-label-large-tracking);
+  font: var(--mat-sys-body-medium);
+  letter-spacing: var(--mat-sys-body-medium-tracking);
+  margin-right: 1em;
 }
 
 nav {

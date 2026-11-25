@@ -15,6 +15,9 @@
       [routerLinkActiveOptions]="{ exact: true }"
       ariaCurrentWhenActive="page">Analysis</a>
     <span class="toolbar-space"></span>
+    @if (state.lastSaved() !== null) {
+    <span class="last-updated">Last Saved: {{ state.lastSaved() | date:'medium' }}</span>
+    }
     <button type="button" matIconButton [cdkCopyToClipboard]="state.fullAnalysis()" [cdkCopyToClipboardAttempts]="5" aria-label="Copy Estimation">
       <mat-icon>content_copy</mat-icon>
     </button>
@@ -31,10 +34,6 @@
       <mat-icon>sunny</mat-icon>
       }
     </mat-slide-toggle>
-    @if (state.lastSaved() !== null) {
-    <span class="toolbar-space"></span>
-    <span class="last-updated">Last Saved: {{ state.lastSaved() | date:'medium' }}</span>
-    }
   </mat-toolbar>
   <mat-progress-bar mode="determinate" [value]="state.analysisPercentage()" aria-label="Analysis progress"></mat-progress-bar>
 </nav>
